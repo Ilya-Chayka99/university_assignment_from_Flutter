@@ -1,6 +1,6 @@
 # university_assignment
 
-Building for the University by Flutter
+University assignment from Flutter
 
 ## Getting Started
 
