@@ -1,8 +1,6 @@
-
-
-
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:university_assignment/features/task_4/note.dart';
+
 
 class NoteAdapter extends TypeAdapter<Note>{
   @override
@@ -12,7 +10,8 @@ class NoteAdapter extends TypeAdapter<Note>{
   Note read(BinaryReader reader) {
     return Note(title: reader.readString(),
     description: reader.readString(),
-    dateTime: DateTime.parse(reader.readString()));
+    dateTime: DateTime.parse(reader.readString()),
+    tags: reader.read());
   }
   
   @override
@@ -20,7 +19,6 @@ class NoteAdapter extends TypeAdapter<Note>{
      writer.writeString(obj.title);
      writer.writeString(obj.description);
      writer.writeString(obj.dateTime.toIso8601String());
+     writer.write(obj.tags);
   }
-
-  
 }

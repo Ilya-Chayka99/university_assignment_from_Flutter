@@ -8,12 +8,13 @@ class Note extends HiveObject{
   late String description;
   @HiveField(2)
   late DateTime dateTime;
+  @HiveField(3)
+  late HiveList tags;
 
-  Note({
+  Note( {
     required this.title,
     required this.description,
-    required this.dateTime
+    required this.dateTime,
+    required this.tags,
   });
-
-
 }
