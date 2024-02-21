@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-class MoneyRepository{
+class Repository{
   Future<List<dynamic>> getMoneyList(String money) async {
     final response = await Dio()
     .get('https://api.currencyapi.com/v3/latest?apikey=cur_live_GYlzdyFyz7yWBNbyKvixIZzEoZPeoxJ5mrTtzZXJ&currencies=UAH%2CKRW%2CTHB%2CUSD%2CRUB%2CNOK%2CTRY&base_currency=$money');

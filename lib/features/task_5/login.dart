@@ -12,8 +12,9 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
-  final nameController = TextEditingController();
-  final egeController = TextEditingController();
+  final loginController = TextEditingController();
+  final passController = TextEditingController();
+  bool passwordVisibility = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,23 +38,56 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Text("Введите имя: ",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),),),
                       SizedBox(
                         width: 300,
                         height: 70,
                         child: TextFormField(
-                          decoration: const InputDecoration(
-                             enabledBorder: OutlineInputBorder(
-                                  borderSide: BorderSide(
-                                  width: 3, color: Colors.greenAccent),
+                          onChanged: (_) => {
+                            setState(() {}),
+                          },
+                          decoration: InputDecoration(
+                             labelText: 'Введите логин',
+                             labelStyle: const TextStyle(
+                              color: Colors.white
+                             ),
+                             suffixIcon: loginController.text.isNotEmpty?
+                              InkWell(
+                                onTap: (){
+                                  loginController.clear();
+                                  setState(() {});
+                                },
+                                child: const Icon(Icons.clear,size: 30,color: Colors.white,),
+                              ):null,
+                              enabledBorder:  OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                  width: 1, color: Color.fromARGB(255, 219, 201, 10)),
+                              borderRadius: BorderRadius.circular(8),
                             ),
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
                           ),
                           style: const TextStyle(
                             color: Color.fromARGB(255, 255, 255, 255),
                           ),
-                          controller: nameController,
+                          controller: loginController,
                           validator: (value) {
-                            if(value == null || value.isEmpty || value.replaceAll(' ', '') == '') return "Поле имени не может быть пустым!!!";
+                            if(value == null || value.isEmpty || value.replaceAll(' ', '') == '') return "Поле логина не может быть пустым!!!";
                             return null;
                           },
                         )
@@ -66,22 +100,58 @@ class _LoginScreenState extends State<LoginScreen> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
-                      const Text("Введите возраст: ",style: TextStyle(color: Color.fromARGB(255, 255, 255, 255),),),
                       SizedBox(
                         width: 300,
                         height: 70,
                         child: TextFormField(
+                          obscureText: !passwordVisibility,
+                          decoration: InputDecoration(
+                            labelText: 'Введите пароль',
+                             labelStyle: const TextStyle(
+                              color: Colors.white
+                             ),
+                             suffixIcon: InkWell(
+                                onTap: () => setState(
+                                  () => passwordVisibility = !passwordVisibility,
+                                ),
+                                focusNode: FocusNode(skipTraversal: true),
+                                child: Icon(
+                                  passwordVisibility
+                                      ? Icons.visibility_outlined
+                                      : Icons.visibility_off_outlined,
+                                  size: 30,
+                                ),
+                              ),
+                              enabledBorder:  OutlineInputBorder(
+                                  borderSide: const BorderSide(
+                                  width: 1, color: Color.fromARGB(255, 219, 201, 10)),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          errorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          focusedErrorBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                            ),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          ),
                            style: const TextStyle(
                             color: Color.fromARGB(255, 255, 255, 255),
                           ),
-                          keyboardType: TextInputType.number,
-                          inputFormatters: <TextInputFormatter>[
-                              FilteringTextInputFormatter.allow(RegExp(r'[0-9]')), 
-                              FilteringTextInputFormatter.digitsOnly
-                          ],
-                          controller: egeController,
+                          controller: passController,
                           validator: (value) {
-                            if(value == null || value.isEmpty) return "Поле возраста не может быть пустым!!!";
+                            if(value == null || value.isEmpty) return "Укажите пароль!";
                             return null;
                           },
                         )
@@ -99,7 +169,6 @@ class _LoginScreenState extends State<LoginScreen> {
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 219, 201, 10)),
                           onPressed: () {
-                            String text = '';
                             _formKey.currentState!.validate();
                             if (_formKey.currentState!.validate()) {
                               // Map<String,String> map = {
@@ -121,8 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 219, 201, 10)),
                           onPressed: () {
                             setState(() {
-                              nameController.text = '';
-                              egeController.text = '';
+                              
                             });
                           },
                           child: const Text('Регистрация',style: TextStyle(

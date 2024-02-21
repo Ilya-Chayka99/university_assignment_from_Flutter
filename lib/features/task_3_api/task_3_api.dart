@@ -157,25 +157,25 @@ class _TaskApiState extends State<TaskApi> {
                 if(double.parse(numberConvert.text.replaceAll(',', '.')) < 0) return;
                   switch (_selectedMoney){//UAH KRW THB USD RUB NOK TRY
                     case 'Рубли':
-                      result = await MoneyRepository().getMoneyList('RUB'); 
+                      result = await Repository().getMoneyList('RUB'); 
                       break;
                     case 'Вона':
-                      result = await MoneyRepository().getMoneyList('KRW'); 
+                      result = await Repository().getMoneyList('KRW'); 
                       break;
                     case 'Бат':
-                      result = await MoneyRepository().getMoneyList('THB'); 
+                      result = await Repository().getMoneyList('THB'); 
                       break;
                     case 'Гривна':
-                      result = await MoneyRepository().getMoneyList('UAH'); 
+                      result = await Repository().getMoneyList('UAH'); 
                       break;
                     case 'Доллар-США':
-                      result = await MoneyRepository().getMoneyList('USD'); 
+                      result = await Repository().getMoneyList('USD'); 
                       break;
                     case 'Крона-Норвегия':
-                      result = await MoneyRepository().getMoneyList('NOK'); 
+                      result = await Repository().getMoneyList('NOK'); 
                       break;
                     case 'Лира':
-                      result = await MoneyRepository().getMoneyList('TRY'); 
+                      result = await Repository().getMoneyList('TRY'); 
                       break;
                   }
                 debugPrint(result.toString());
