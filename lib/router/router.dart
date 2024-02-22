@@ -1,10 +1,10 @@
 
-
 import 'package:university_assignment/features/task_1_form/task_1_form.dart';
 import 'package:university_assignment/features/task_2_calculate/task_2_calculate.dart';
 import 'package:university_assignment/features/task_3_api/task_3_api.dart';
 import 'package:university_assignment/features/task_4/todoList.dart';
 import 'package:university_assignment/features/task_5/login.dart';
+import 'package:university_assignment/features/task_5/register.dart';
 import 'package:university_assignment/features/task_6_pedometer/pedometr.dart';
 import '../features/task_selection/task_selection.dart';
 
@@ -18,4 +18,5 @@ final routes = {
         '/task-4':(context) => const TodoList(),
         '/task-6':(context) => const PedomertScreen(),
         '/task-5':(context) => const LoginScreen(),
+        '/register':(context) => const RegisterScreen(),
       };

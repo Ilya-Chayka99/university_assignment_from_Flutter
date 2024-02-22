@@ -190,7 +190,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 219, 201, 10)),
                           onPressed: () {
                             setState(() {
-                              
+                              Navigator.of(context).pushNamed('/register');
                             });
                           },
                           child: const Text('Регистрация',style: TextStyle(
