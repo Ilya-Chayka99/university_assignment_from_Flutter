@@ -4,6 +4,8 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:university_assignment/features/repositories/image/image_repositiry.dart';
+import 'package:university_assignment/features/task_5/User.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -18,6 +20,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final surnameController = TextEditingController();
   final loginController = TextEditingController();
   final passController = TextEditingController();
+  final dateController = TextEditingController();
   bool passwordVisibility = false;
   File? image;
 
@@ -28,6 +31,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     setState(() {
       this.image = imageTemporary;
     });
+
   }
 
   @override
@@ -362,6 +366,58 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ],
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        SizedBox(
+                          width: 300,
+                          height: 70,
+                          child: TextFormField(
+                            keyboardType: TextInputType.datetime,
+                            decoration: InputDecoration(
+                              labelText: 'Дата рождения*',
+                               labelStyle: const TextStyle(
+                                color: Colors.white
+                               ),
+                                enabledBorder:  OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                    width: 1, color: Color.fromARGB(255, 219, 201, 10)),
+                                borderRadius: BorderRadius.circular(8),
+                              ),
+                              focusedBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            errorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            focusedErrorBorder: OutlineInputBorder(
+                              borderSide: const BorderSide(
+                                width: 1, color: Color.fromARGB(255, 219, 201, 10)
+                              ),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            ),
+                             style: const TextStyle(
+                              color: Color.fromARGB(255, 255, 255, 255),
+                            ),
+                            controller: dateController,
+                            validator: (value) {
+                              if(value == null || value.isEmpty) return "Укажите дату рождения!";
+                              return null;
+                            },
+                          )
+                        )
+                      ],
+                    ),
+                  ),
                   image != null?
                     ClipOval(
                       child: Image.file(
@@ -412,15 +468,24 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           width: 375,
                           child: ElevatedButton(
                             style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 219, 201, 10)),
-                            onPressed: () {
+                            onPressed: () async{
                               _formKey.currentState!.validate();
-                              if (_formKey.currentState!.validate()) {
-                                // Map<String,String> map = {
-                                //   'name':nameController.text,
-                                //   'ege':egeController.text,
-                                //   'gender':_gender.toString()
-                                // };
-                                // Navigator.of(context).pushNamed('/task-1-details',arguments:map);
+                              if (_formKey.currentState!.validate() && image != null) {
+                                if(image == null) {
+                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Выберите аватар!'), backgroundColor: Colors.yellow,));
+                                  return;
+                                }
+                                String article = await Repository.seveImage(image!);
+                                User user = User(nameController.text, 
+                                  surnameController.text, loginController.text, 
+                                  passController.text,DateTime.parse(dateController.text) , article);
+                                  String a = await Repository.seveUser(user);
+                                  if(a == "yes") {
+                                    Navigator.of(context).pushNamed('/task-5');
+                                  } else{
+                                    ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Пользователь с таким логином уже зарегистрирован!'), backgroundColor: Colors.red,));
+                                    return;
+                                  }
                               }
                             },
                             child: const Text('Регистрация',style: TextStyle(
