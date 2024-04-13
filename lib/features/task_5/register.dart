@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:intl/intl.dart';
 import 'package:university_assignment/features/repositories/image/image_repositiry.dart';
 import 'package:university_assignment/features/task_5/User.dart';
 
@@ -21,8 +22,26 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final loginController = TextEditingController();
   final passController = TextEditingController();
   final dateController = TextEditingController();
+  DateTime? selectedDate;
   bool passwordVisibility = false;
   File? image;
+
+  Future _selectDate(BuildContext context) async {
+    final DateTime? selected = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(1900),
+      lastDate: DateTime(2050),
+    );
+
+    if (selected != null && selected != selectedDate) {
+      setState(() {
+        selectedDate = selected;
+        final DateFormat formatter = DateFormat('yyyy-MM-dd');
+        dateController.text = formatter.format(selected);
+      });
+    }
+  }
 
   Future pickImage(ImageSource source) async {
     final XFile? image = await ImagePicker().pickImage(source: source);
@@ -375,6 +394,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           width: 300,
                           height: 70,
                           child: TextFormField(
+                            readOnly: true,
                             keyboardType: TextInputType.datetime,
                             decoration: InputDecoration(
                               labelText: 'Дата рождения*',
@@ -414,7 +434,19 @@ class _RegisterScreenState extends State<RegisterScreen> {
                               return null;
                             },
                           )
-                        )
+                        ),
+                        SizedBox(
+                          width: 250,
+                          child: ElevatedButton(
+                            style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 219, 201, 10)),
+                            onPressed: () {
+                               _selectDate(context);
+                            },
+                            child: const Text('Указать дату рождения',style: TextStyle(
+                          color: Color.fromARGB(255, 54, 49, 0)
+                                              ),),
+                          ),
+                        ),
                       ],
                     ),
                   ),
@@ -470,15 +502,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
                             style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 219, 201, 10)),
                             onPressed: () async{
                               _formKey.currentState!.validate();
-                              if (_formKey.currentState!.validate() && image != null) {
-                                if(image == null) {
-                                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Выберите аватар!'), backgroundColor: Colors.yellow,));
-                                  return;
+                              if (_formKey.currentState!.validate()) {
+                                String article = "no";
+                                if(image != null) {
+                                  article = await Repository.seveImage(image!);
                                 }
-                                String article = await Repository.seveImage(image!);
                                 User user = User(nameController.text, 
                                   surnameController.text, loginController.text, 
-                                  passController.text,DateTime.parse(dateController.text) , article);
+                                  passController.text,selectedDate! , article);
                                   String a = await Repository.seveUser(user);
                                   if(a == "yes") {
                                     Navigator.of(context).pushNamed('/task-5');

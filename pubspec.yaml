@@ -18,6 +18,9 @@ dependencies:
   pedometer: ^4.0.1
   permission_handler: ^11.3.0
   image_picker: ^1.0.7
+  path_provider: ^2.1.2
+  audioplayers: ^5.2.1
+  http: ^1.2.1
 
 dev_dependencies:
   flutter_test:
@@ -33,6 +36,9 @@ flutter:
     - lib/lang/en.json
     - lib/lang/ru.json
     - lib/image/run.jpg
+    - lib/image/!pustycshka.jpg
+    - lib/assets/audio/
+    - lib/assets/images/
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

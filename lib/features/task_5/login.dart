@@ -1,7 +1,7 @@
 
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:university_assignment/features/repositories/image/image_repositiry.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -168,15 +168,15 @@ class _LoginScreenState extends State<LoginScreen> {
                         width: 175,
                         child: ElevatedButton(
                           style: ElevatedButton.styleFrom(backgroundColor: const Color.fromARGB(255, 219, 201, 10)),
-                          onPressed: () {
+                          onPressed: () async{
                             _formKey.currentState!.validate();
                             if (_formKey.currentState!.validate()) {
-                              // Map<String,String> map = {
-                              //   'name':nameController.text,
-                              //   'ege':egeController.text,
-                              //   'gender':_gender.toString()
-                              // };
-                              // Navigator.of(context).pushNamed('/task-1-details',arguments:map);
+                              Map<String,dynamic>? user = await Repository.loginUser(loginController.text, passController.text);
+                              if(user == null) {
+                                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(content: Text('Пользователь не найден!'), backgroundColor: Colors.red,));
+                                return;
+                              }
+                              Navigator.of(context).pushNamed('/main5',arguments:user);
                             }
                           },
                           child: const Text('Войти',style: TextStyle(
